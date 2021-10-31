@@ -19,7 +19,8 @@ import pickle
 
 ### get file list
 a = os.getcwd()
-imagepath = a + '\EOBrowser-Images-PNG-L2A\SingleBandImages'
+b = os.path.dirname(a)
+imagepath = b + '\EOBrowser-Images-PNG-L2A\SingleBandImages'
 imagelist= os.listdir(imagepath)
 
 ### read images, make massive 3D matrix (height, width, depth)

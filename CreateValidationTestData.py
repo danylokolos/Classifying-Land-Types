@@ -9,6 +9,7 @@ Created on Sun Oct 24 21:42:24 2021
 
 %reset -f
 
+import os
 import pickle
 import csv
 import numpy as np
@@ -19,7 +20,7 @@ fullim = pickle.load(open("fullim.pkl","rb"))
 fullim.shape
 
 # load validation coordinates
-filename = "DatasetTrainValidateCoordinates.csv"
+filename = os.path.dirname(os.getcwd()) + "\DatasetTrainValidateCoordinates_0-6.csv"
 fields = []
 rows = []
 with open(filename, 'r') as csvfile:
@@ -46,7 +47,7 @@ f.close()
 
 # output csv file for ML, bigger x4
 smoothsize = 10
-f = open('ValidationTestDatasetBigger.csv','w+',newline='')
+f = open('ValidationTestDatasetBigger_x4.csv','w+',newline='')
 writer = csv.writer(f)
 header = ['Category','LandType','ImageX','ImageY','Band01','Band02','Band03','Band04','Band05','Band06','Band07','Band08','Band8A','Band09','Band11','Band12']
 writer.writerow(header)
@@ -74,5 +75,26 @@ for ii in range(0,len(rows)):
     writer.writerow(data2)
     writer.writerow(data3)
     writer.writerow(data4)
+
+f.close()
+
+# output csv file for ML, bigger x16
+# output csv file for ML
+smoothsize = 5
+f = open('ValidationTestDatasetBigger_x16.csv','w+',newline='')
+writer = csv.writer(f)
+header = ['Category','LandType','ImageX','ImageY','Band01','Band02','Band03','Band04','Band05','Band06','Band07','Band08','Band8A','Band09','Band11','Band12']
+writer.writerow(header)
+
+for ii in range(0,len(rows)):
+    for dimx in range(0,4):
+        for dimy in range(0,4):
+                data = [rows[ii][1],rows[ii][2]]
+                data.extend([int(rows[ii][3])+dimx*smoothsize,int(rows[ii][4])+dimy*smoothsize])
+                for iBand in range(0,fullim.shape[2]):
+                    tmp = np.median(fullim[range(int(rows[ii][4])+dimx*smoothsize,int(rows[ii][4])+(dimx+1)*smoothsize),range(int(rows[ii][3])+dimy*smoothsize,int(rows[ii][3])+(dimy+1)*smoothsize),iBand])
+                    data.append(tmp)
+                writer.writerow(data)
+f.close()
 
 f.close()
