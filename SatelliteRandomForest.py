@@ -262,7 +262,7 @@ for i, color in zip(range(n_classes), colors):
         tpr[i],
         color=color,
         # lw=lw,
-        label="ROC curve of class {0} (area = {1:0.2f})".format(i, roc_auc[i]),
+        label="ROC curve of {0} (area = {1:0.2f})".format(target_names[i], roc_auc[i]),
     )
 
 # plt.plot([0, 1], [0, 1], "k--", lw=lw)
