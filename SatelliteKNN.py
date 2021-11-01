@@ -8,8 +8,8 @@ Created on Sat Oct 30 21:56:11 2021
 """ Script to test Random Forest Classification on Satellite Data"""
 
 ### Setup
-# Load scikit's random forest classifier library
-from sklearn.ensemble import RandomForestClassifier
+# Load scikit's K Nearest Neighbour classifier library
+from sklearn.neighbors import KNeighborsClassifier
 from sklearn.model_selection import train_test_split
 
 # Load pandas
@@ -57,9 +57,12 @@ y  = train.iloc[:,12].values
 
 ### Create Model
 # Create a random forest Classifier
-clf = RandomForestClassifier(n_estimators=50, 
-                               max_features = 'sqrt',
-                               n_jobs=-1, verbose = 1)
+# clf = RandomForestClassifier(n_estimators=50, 
+#                                max_features = 'sqrt',
+#                                n_jobs=-1, verbose = 1)
+
+# Create a K Nearest NeighborsClassifier Classifier
+clf = KNeighborsClassifier(n_neighbors=3)
 clf.fit(train[features], y)
 clf.predict(test[features])
 
@@ -78,7 +81,7 @@ test['LandType'].head()
 pd.crosstab(test['LandType'], preds, rownames=['Actual LandType'], colnames=['Predicted LandType'])
 
 # View a list of the features and their importance scores
-list(zip(train[features], clf.feature_importances_))
+# list(zip(train[features], clf.feature_importances_))
 
 
 ### Extra Stats
@@ -90,14 +93,7 @@ modelresults = model.fit(train[features], train_labels)
 n_nodes = []
 max_depths = []
 
-# Stats about the trees in random forest
-for ind_tree in model.estimators_:
-    n_nodes.append(ind_tree.tree_.node_count)
-    max_depths.append(ind_tree.tree_.max_depth)
-    
-print(f'Average number of nodes {int(np.mean(n_nodes))}')
-print(f'Average maximum depth {int(np.mean(max_depths))}')
-
+   
 # Training predictions (to demonstrate overfitting)
 train_rf_predictions = model.predict(train[features])
 train_rf_probs = model.predict_proba(train[features])[:, 1]
@@ -288,7 +284,7 @@ plt.legend(loc='center left', bbox_to_anchor=(1, 0.5))
 
 # plt.show()
 
-plt.savefig('RF_ROCCurve.png')
+plt.savefig('KNN_ROCCurve.png')
 
 
 ### Plot Confusion Matrix
@@ -341,7 +337,7 @@ cm = confusion_matrix(test_labels, rf_predictions)
 plot_confusion_matrix(cm, classes = target_names,
                       title = 'Land Types Confusion Matrix')
 
-plt.savefig('RF_ConfusionMatrix_05.png')
+plt.savefig('KNN_ConfusionMatrix_05.png')
 
 
 ### Predict onto unlabeled dataset
@@ -388,4 +384,4 @@ pi.putpalette(palette)
 
 # Display and save
 pi.show()
-pi.save('RF_SatelliteClassification_05.png')
+pi.save('KNN_SatelliteClassification_05.png')
