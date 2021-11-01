@@ -39,7 +39,7 @@ fullim.shape
 pickle.dump(fullim,open("fullim.pkl","wb"))
     
 ### find median value of each group of pixels
-smoothsize = 20 # num of pixels in X and Y
+smoothsize = 5 # num of pixels in X and Y
 
 #resize image to match scaling
 tmpX = fullim.shape[0] % smoothsize
@@ -60,7 +60,7 @@ procim.shape
 image = imageio.imwrite('imageB12.png',procim[:,:,11])
         
 ### output csv file
-f = open('FullImageDataset.csv','w+',newline='')
+f = open('FullImageDataset_05.csv','w+',newline='')
 writer = csv.writer(f)
 header = ['ImageX','ImageY','Band01','Band02','Band03','Band04','Band05','Band06','Band07','Band08','Band8A','Band09','Band11','Band12']
 writer.writerow(header)

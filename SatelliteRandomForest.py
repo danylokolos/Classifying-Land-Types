@@ -347,8 +347,47 @@ plt.savefig('ConfusionMatrix.png')
 
 
 ### Predict onto unlabeled dataset
+# Read in data
+dfFull = pd.read_csv('FullImageDataset_05.csv')
 
+outputFull = clf.predict(dfFull[features])
 
+# create array of land types
+a = dfFull['ImageX']
+SizeY = int(a.tail(1))
+b = dfFull['ImageY']
+SizeX = int(b.tail(1))
 
+# initialize array
+im = np.zeros((SizeY,SizeX),dtype=np.int8)
+Xarray = np.array(dfFull['ImageY'])
+Yarray = np.array(dfFull['ImageX'])
 
+for ii in range(0,outputFull.size):
+    im[Yarray[ii]-1,Xarray[ii]-1] = outputFull[ii]
 
+### Output Predicted Image
+from PIL import Image
+import numpy as np
+
+# Make a palette
+palette = [96,96,96,   # 0=grey
+           51,255,51,  # 1=lightgreen
+           255,255,51, # 2=yellow
+           0,153,0,    # 3=darkgreen
+           0,0,255,    # 4=blue
+           255,255,255,# 5=white
+           0,0,0]      # 6=black
+
+# Pad with zeroes to 768 values, i.e. 256 RGB colours
+palette = palette + [0]*(768-len(palette))
+
+# Convert Numpy array to palette image
+pi = Image.fromarray(im,'P')
+
+# Put the palette in
+pi.putpalette(palette)
+
+# Display and save
+pi.show()
+pi.save('SatelliteClassification_05.png')
