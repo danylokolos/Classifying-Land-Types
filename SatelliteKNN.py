@@ -260,7 +260,7 @@ plt.plot(
     linewidth=4,
 )
 
-colors = cycle(["aqua", "darkorange", "cornflowerblue", "forestgreen", "navy", "deeppink", "red"])
+colors = cycle(["grey", "lawngreen", "yellow", "forestgreen", "blue", "white", "black"])
 for i, color in zip(range(n_classes), colors):
     plt.plot(
         fpr[i],
@@ -385,3 +385,7 @@ pi.putpalette(palette)
 # Display and save
 pi.show()
 pi.save('KNN_SatelliteClassification_05.png')
+
+
+from collections import Counter
+Counter(outputFull)

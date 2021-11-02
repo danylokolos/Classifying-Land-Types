@@ -264,7 +264,7 @@ plt.plot(
     linewidth=4,
 )
 
-colors = cycle(["aqua", "darkorange", "cornflowerblue", "forestgreen", "navy", "deeppink", "red"])
+colors = cycle(["grey", "lawngreen", "yellow", "forestgreen", "blue", "white", "black"])
 for i, color in zip(range(n_classes), colors):
     plt.plot(
         fpr[i],
